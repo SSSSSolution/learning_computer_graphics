@@ -1,6 +1,6 @@
 [submodule "glfw"]
 	path = glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "examples"]
-	path = examples
-	url = https://github.com/openglredbook/examples.git
+[submodule "redbook_examples"]
+	path = redbook_examples
+	url = https://github.com/SSSSSolution/examples.git
