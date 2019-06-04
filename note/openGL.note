@@ -1,0 +1,79 @@
+-------- OpenGL Graphics Primitives --------
+三个基本图元: Points, Lines, Triangles.
+	Lines 可以组成 Strips, Loops.
+	Triangles 可以组成 Fans
+	OpenGL 还支持 Patches, Adjacency
+
+* Points:
+	Points被表示成一个单独的Vertex.
+	每个Point都是一个正方形的区域
+	
+	-void glPointSize(GLfloat size);
+
+* Lines, Strips and Loops:
+	Lines也可以连接在一起表示一系列线段，闭合起来就是line loop.
+
+* Triangles, Strips and Fans:
+	
+
+* OpenGL Token:
+	GL_POINTS
+	GL_LINES
+	GL_LINE_STRIP
+	GL_LINE_LOOP
+	GL_TRIANGLES
+	GL_TRIANGLE_STRIP
+	GL_TRIANGLE_FAN
+
+* 将多边形渲染成Points, Outlines, 还是 Solids?
+	void glPolygonMode(GLenum face, GLenum mode);
+	face: GL_FRONT_AND_BACK 
+	mode: GL_POINT, GL_LINE, GL_FILL
+
+* 多边形的正反面
+	void glFrontFace(GLenum mode);
+	mode: GL_CCW/GL_CW
+
+
+-------- OpenGL Data Buffer --------
+* 创建并分配Buffers:
+	void glCreateBuffers(GLsizei n, GLuint *buffers);
+
+	glNamedBufferStorage(GLuint buffer, GLsizeiptr size,
+						 const void *data, GLbitfield flags);
+	flags:	GL_DYNAMIC_STORAGE
+			GL_MAP_READ_BIT
+			GL_MAP_WRITE_BIT
+
+	void glBindBuffer(GLenum target, GLuint buffer)
+	
+	glNamedBufferSubData(GLuint buffer, GLintptr offset)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
