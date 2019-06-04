@@ -3,9 +3,12 @@ This project is just used to learn computer graphics.
 1. How to build enviroment to compile this project?
 	a. $: git submodule init && git submodule update
 	b. Use CMake to compile and install "glfw"; 
-	c. Use CMake to compile and install "redbook_example";
-	d. Export these env:
-		PROJECT_ROOT: The root dir of this project
-		REDBOOK_BUILD_DIR: The dir in which you build redbook_example
-	e. $: . ./build_env.sh
+	c. Use CMake to compile "redbook_example";
+	d. Use CMake to compile "sb7code";
+	e. Export these envs:
+		PROJECT_ROOT 
+		REDBOOK_LIB_DIR
+		SB7_LIB_DIR
+
+	f. $: . ./build_env.sh
 	

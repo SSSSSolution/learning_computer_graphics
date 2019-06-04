@@ -4,3 +4,6 @@
 [submodule "redbook_examples"]
 	path = redbook_examples
 	url = https://github.com/SSSSSolution/examples.git
+[submodule "sb7code"]
+	path = sb7code
+	url = https://github.com/openglsuperbible/sb7code.git
