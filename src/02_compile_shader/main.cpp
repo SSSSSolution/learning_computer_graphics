@@ -2,13 +2,38 @@
 
 using namespace sb7;
 
+static GLuint compile_shaders(void);
+
 class my_application : public application
 {
 public:
     void render(double currentTime)
     {
-
+        const GLfloat color[] = {(float)sin(currentTime)*0.5f + 0.5f,
+                                 (float)cos(currentTime)*0.5f + 0.5f,
+                                 0.0f, 1.0f};
+        glClearBufferfv(GL_COLOR, 0, color);
+        glUseProgram(rendering_program);
+        glDrawArrays(GL_POINTS, 0, 1);
     }
+
+    void startup()
+    {
+        rendering_program = compile_shaders();
+        glCreateVertexArrays(1, &vertex_array_object);
+        glBindVertexArray(vertex_array_object);
+    }
+
+    void shutdown()
+    {
+        glDeleteVertexArrays(1, &vertex_array_object);
+        glDeleteProgram(rendering_program);
+        glDeleteVertexArrays(1, &vertex_array_object);
+    }
+
+private:
+    GLuint rendering_program;
+    GLuint vertex_array_object;
 };
 
 GLuint compile_shaders(void)
