@@ -6,11 +6,22 @@ glShaderSource:		将shader源码设置给shader对象
 glCompileShader:	编译shader对象的源码
 glDeleteShader:		删除shader对象,对象附属到program对象后即可删除
 
-vertex shader
-tessellation control shader
-tessellation envalution shader
-gemetry shader
-fragment shader
+OpenGL Pipeline:
+front end:
+	1.vertex shader
+	2.tessellation control shader
+	3.tessellation envalution shader
+	4.gemetry shader
+		每个图元运行一次，访问这个图元的所有顶点，能显示的增加或减少管线的数据。
+		能在管线中改变图元模式
+
+	5.primitive assembly 图元装配
+	6.clipping
+	7.viewport transformation
+	8.culling
+	9.rasterization
+
+	10.fragment shader
 
 ------- program -------
 glCreateProgram:	创建一个program对象
@@ -39,6 +50,30 @@ void glPatchParameteri() 设置每个patch的控制点
 
 
 
+-------- Data -------
+1. How to create buffer and textures that you can use to 
+store data that your program can access.
+
+2. How to get OpenGL to supply the values of your vertex
+attributes automatically.
+
+3. How to access textures and buffers from your shaders.
+
+Buffer
+	glCreateBuffers:	创建buffer对象
+	glBindBuffer:	　	绑定buffer对象到当前的opengGL上下文
+
+	glBufferStorage:		为buffer对象申请内存
+	glNamedBufferStorage
+
+	glMapNamedBuffer:	映射buffer对象的内存
+	glMapBuffer
+	glUnmapNamedBuffer
+	glUnmapBuffer
+	glMapBufferRange
+	glMapNamedBuffer
+
+	
 
 
 
@@ -75,4 +110,4 @@ void glPatchParameteri() 设置每个patch的控制点
 
 
 
-
+o
