@@ -12,4 +12,5 @@ add_subdirectory(src/06_tessellation_control_shader)
 add_subdirectory(src/07_geometry_shader)
 add_subdirectory(src/08_draw_cube)
 add_subdirectory(src/09_test_shader)
+add_subdirectory(src/10_some_cube)
 
