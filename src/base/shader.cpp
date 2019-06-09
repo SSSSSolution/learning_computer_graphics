@@ -32,6 +32,21 @@ namespace curiosity {
         glDeleteShader(fragmentShader);
     }
 
+    void Shader::setBool(const string &name, bool value) const
+    {
+        glUniform1i(glGetUniformLocation(programID, name.c_str()), (int)value);
+    }
+
+    void Shader::setInt(const string &name, int value) const
+    {
+        glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+    }
+
+    void Shader::setFloat(const string &name, float value) const
+    {
+        glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+    }
+
     void Shader::installShader(const char *shaderPath, GLuint *shader, GLuint shaderType)
     {
         std::string shaderSrc;

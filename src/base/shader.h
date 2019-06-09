@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include "sb7_include/sb7.h"
+#include <string>
 
 namespace curiosity {
 
@@ -18,6 +19,10 @@ namespace curiosity {
         inline GLuint getProgramID() {
             return programID;
         }
+
+        void setBool(const std::string &name, bool value) const;
+        void setInt(const std::string &name, int value) const;
+        void setFloat(const std::string &name, float value) const;
 
     private:
         void installShader(const char *shaderPath, GLuint *shader, GLuint shaderType);
