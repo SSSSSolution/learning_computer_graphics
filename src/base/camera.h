@@ -9,7 +9,7 @@ namespace curiosity {
     public:
         Camera() {}
 
-        Camera(vec3 &p, vec3 &f, vec3 &u)
+        Camera(vec3 &pos, vec3 &up, float pitch, float yaw)
             : pos(p), front(f), up(u) {
         }
 
@@ -36,6 +36,8 @@ namespace curiosity {
         vec3 pos;
         vec3 front;
         vec3 up;
+        float pitch;
+        float yaw;
     };
 
 }

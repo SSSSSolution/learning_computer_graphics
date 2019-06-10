@@ -77,7 +77,7 @@ public:
         static double lastTime = currentTime;
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
-        std::cout << "frame time: " << deltaTime << "s" << std::endl;
+//        std::cout << "frame time: " << deltaTime << "s" << std::endl;
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -105,9 +105,10 @@ public:
                     camera.getUp());
 
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.dataPtr());
+
         curiosity::TransMat4 project = curiosity::TransMat4::Projection(
                     (float)(info.windowWidth)/(float)(info.windowHeight),
-                    3.14159f/4.0f, 0.1f, 100.0f);
+                    fov*3.14159f/180.0f, 0.1f, 100.0f);
         glUniformMatrix4fv(projectLoc, 1, GL_FALSE, project.dataPtr());
 
         for (int i = 0; i < 10; i++) {
@@ -177,6 +178,8 @@ public:
          camera.setUp(curiosity::vec3(0.0f, 1.0f, 0.0f));
 
          glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+         fov = 45;
 
     }
 
@@ -256,10 +259,22 @@ public:
         curiosity::vec3 _front = front.normalize();
         camera.setFront(_front);
     }
+
+    virtual void onMouseWheel(int pos)
+    {
+        std::cout << pos << std::endl;
+        if (fov <= 1.0f)
+            fov = 1.0f;
+        if (fov >= 45.0f)
+            fov = 45.0f;
+        fov += pos * 5.0f;
+    }
+
 private:
     curiosity::Shader *shader;
     GLuint VAO, VBO;
     GLuint texture1;
+    float fov;
 
     curiosity::Camera camera;
     float deltaTime;
