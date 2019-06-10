@@ -1,3 +1,6 @@
 .tmp
 Makefile*
 test
+
+.qmake.stash
+target_wrapper.sh

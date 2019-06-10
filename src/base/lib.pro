@@ -34,10 +34,12 @@ HEADERS += vector2.h \
     mathutil.h \
     shader.h \
     transmat4.h \
-    camera.h
+    camera.h \
+    vec3.h
 
 SOURCES += \
     shader.cpp \
     transmat4.cpp \
-    camera.cpp
+    camera.cpp \
+    vec3.cpp
 

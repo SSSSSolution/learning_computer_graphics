@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
+#include "camera.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -73,8 +74,11 @@ class my_application : public sb7::application
 public:
     virtual void render(double currentTime)
     {
-        const GLfloat color[] = {0.0, 0.6, 0.0f, 1.0f};
-//        glClearBufferfv(GL_COLOR, 0, color);
+        static double deltaTime = 0;
+        static double lastTime = currentTime;
+        deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+//        std::cout << "frame time: " << deltaTime << "s" << std::endl;
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -87,7 +91,15 @@ public:
         GLuint modelLoc = glGetUniformLocation(shader->getProgramID(),"model");
         GLuint viewLoc = glGetUniformLocation(shader->getProgramID(), "view");
         GLuint projectLoc = glGetUniformLocation(shader->getProgramID(), "project");
-        curiosity::TransMat4 view = curiosity::TransMat4::Translation( 0.0f, 0.0f, 13.0f);
+//        curiosity::TransMat4 view = curiosity::TransMat4::Translation( 0.0f, 0.0f, 13.0f);
+
+        // view
+
+        curiosity::TransMat4 view = curiosity::TransMat4::lookAt(
+                    camera.getPos(),
+                    camera.getPos()+camera.getFront(),
+                    camera.getUp());
+
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.dataPtr());
         curiosity::TransMat4 project = curiosity::TransMat4::Projection(
                     (float)(info.windowWidth)/(float)(info.windowHeight),
@@ -109,8 +121,8 @@ public:
     {
         char *root = getenv("PROJECT_ROOT");
         std::string rootDir(root);
-        std::string vertexShaderPath = rootDir + std::string("/src/shader/10_some_cube.vs");
-        std::string fragmentShaderPath = rootDir + std::string("/src/shader/10_some_cube.fs");
+        std::string vertexShaderPath = rootDir + std::string("/src/shader/11_camera.vs");
+        std::string fragmentShaderPath = rootDir + std::string("/src/shader/11_camera.fs");
         shader = new curiosity::Shader(vertexShaderPath.c_str(),
                                        fragmentShaderPath.c_str());
 
@@ -155,12 +167,58 @@ public:
          shader->setInt("texture1", 0);
 
          glEnable(GL_DEPTH_TEST);
+
+         camera.setPos(curiosity::vec3(0.0, 0.0f, 30.0));
+         camera.setFront(curiosity::vec3(0.0f, 0.0f, -1.0f));
+         camera.setUp(curiosity::vec3(0.0f, 1.0f, 0.0f));
+    }
+
+    virtual void init()
+    {
+        strcpy(info.title, "OpenGL SuperBible Example");
+        info.windowWidth = 1920;
+        info.windowHeight = 1080;
+#ifdef __APPLE__
+        info.majorVersion = 3;
+        info.minorVersion = 2;
+#else
+        info.majorVersion = 4;
+        info.minorVersion = 3;
+#endif
+        info.samples = 0;
+        info.flags.all = 0;
+        info.flags.cursor = 1;
+#ifdef _DEBUG
+        info.flags.debug = 1;
+#endif
+    }
+
+    virtual void onKey(int button, int action)
+    {
+        float cameraSpeed = 1.0f;
+        if (button == GLFW_KEY_W && GLFW_REPEAT == action) {
+            camera.setPos(camera.getPos() + camera.getFront()*cameraSpeed);
+            std::cout << "W" << std::endl;
+        } else if (button == GLFW_KEY_S && GLFW_REPEAT == action) {
+            camera.setPos(camera.getPos() - camera.getFront()*cameraSpeed);
+            std::cout << "S" << std::endl;
+        } else if (button == GLFW_KEY_A && GLFW_REPEAT == action) {
+            curiosity::vec3 right = camera.getUp().cross(camera.getFront()).normalize();
+            camera.setPos(camera.getPos() + right*cameraSpeed);
+            std::cout << "A" << std::endl;
+        } else if (button == GLFW_KEY_D && GLFW_REPEAT == action) {
+            curiosity::vec3 right = camera.getFront().cross(camera.getUp()).normalize();
+            camera.setPos(camera.getPos() + right*cameraSpeed);
+            std::cout << "D" << std::endl;
+        }
     }
 
 private:
     curiosity::Shader *shader;
     GLuint VAO, VBO;
     GLuint texture1;
+
+    curiosity::Camera camera;
 };
 
 DECLARE_MAIN(my_application);
