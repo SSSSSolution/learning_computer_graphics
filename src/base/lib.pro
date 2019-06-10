@@ -33,9 +33,11 @@ HEADERS += vector2.h \
     circle.h \
     mathutil.h \
     shader.h \
-    transmat4.h
+    transmat4.h \
+    camera.h
 
 SOURCES += \
     shader.cpp \
-    transmat4.cpp
+    transmat4.cpp \
+    camera.cpp
 

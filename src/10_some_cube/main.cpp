@@ -57,15 +57,15 @@ float vertices[] = {
 
 curiosity::Vector3<float> cubePositions[] = {
         curiosity::Vector3<float>( 0.0f,  0.0f,  0.0f),
-        curiosity::Vector3<float>( 2.0f,  5.0f, -15.0f),
-        curiosity::Vector3<float>(-1.5f, -2.2f, -2.5f),
-        curiosity::Vector3<float>(-3.8f, -2.0f, -12.3f),
-        curiosity::Vector3<float>( 2.4f, -0.4f, -3.5f),
-        curiosity::Vector3<float>(-1.7f,  3.0f, -7.5f),
-        curiosity::Vector3<float>( 1.3f, -2.0f, -2.5f),
-        curiosity::Vector3<float>( 1.5f,  2.0f, -2.5f),
-        curiosity::Vector3<float>( 1.5f,  0.2f, -1.5f),
-        curiosity::Vector3<float>(-1.3f,  1.0f, -1.5f)
+        curiosity::Vector3<float>( 2.0f,  5.0f, 15.0f),
+        curiosity::Vector3<float>(-1.0f, -1.0f, 2.5f),
+        curiosity::Vector3<float>(-3.8f, -2.0f, 12.3f),
+        curiosity::Vector3<float>( 2.4f, -0.4f, 3.5f),
+        curiosity::Vector3<float>(-1.7f,  3.0f, 7.5f),
+        curiosity::Vector3<float>( 1.3f, -2.0f, 2.5f),
+        curiosity::Vector3<float>( 1.5f,  2.0f, 2.5f),
+        curiosity::Vector3<float>( 1.5f,  0.2f, 1.5f),
+        curiosity::Vector3<float>(-1.3f,  1.0f, 1.5f)
 };
 
 class my_application : public sb7::application
@@ -85,14 +85,21 @@ public:
 
         glBindVertexArray(VAO);
         GLuint modelLoc = glGetUniformLocation(shader->getProgramID(),"model");
-        GLuint rotateLoc = glGetUniformLocation(shader->getProgramID(), "rotate");
-        curiosity::TransMat4 rotate = curiosity::TransMat4::Rotation(1.0f, 0.0f, 0.0f, (float)currentTime);
-        glUniformMatrix4fv(rotateLoc, 1, GL_FALSE, rotate.dataPtr());
+        GLuint viewLoc = glGetUniformLocation(shader->getProgramID(), "view");
+        GLuint projectLoc = glGetUniformLocation(shader->getProgramID(), "project");
+        curiosity::TransMat4 view = curiosity::TransMat4::Translation( 0.0f, 0.0f, 3.0f);
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.dataPtr());
+        curiosity::TransMat4 project = curiosity::TransMat4::Projection(
+                    (float)(info.windowWidth)/(float)(info.windowHeight),
+                    3.14159f/4.0f, 0.1f, 100.0f);
+        glUniformMatrix4fv(projectLoc, 1, GL_FALSE, project.dataPtr());
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             curiosity::TransMat4 model = curiosity::TransMat4::Translation(cubePositions[i].getX(),
                                               cubePositions[i].getY(),
                                               cubePositions[i].getZ());
+            curiosity::TransMat4 rotate = curiosity::TransMat4::Rotation(1.0f, 1.0f, 1.0f, 20.0f*i+(float)currentTime);
+            model = model * rotate;
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.dataPtr());
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
