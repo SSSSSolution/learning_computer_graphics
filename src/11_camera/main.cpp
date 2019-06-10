@@ -74,11 +74,10 @@ class my_application : public sb7::application
 public:
     virtual void render(double currentTime)
     {
-        static double deltaTime = 0;
         static double lastTime = currentTime;
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
-//        std::cout << "frame time: " << deltaTime << "s" << std::endl;
+        std::cout << "frame time: " << deltaTime << "s" << std::endl;
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -95,6 +94,11 @@ public:
 
         // view
 
+//        float r = 13.0f;
+//        float cameraZ = 13.0f * sin(currentTime);
+//        float cameraY = 13.0f *cos(currentTime);
+//        camera.setPos(curiosity::vec3(0.0,cameraY, cameraZ));
+//        camera.setFront(curiosity::vec3(0.0f, 0.0f, 0.0f)-camera.getPos());
         curiosity::TransMat4 view = curiosity::TransMat4::lookAt(
                     camera.getPos(),
                     camera.getPos()+camera.getFront(),
@@ -171,6 +175,9 @@ public:
          camera.setPos(curiosity::vec3(0.0, 0.0f, 30.0));
          camera.setFront(curiosity::vec3(0.0f, 0.0f, -1.0f));
          camera.setUp(curiosity::vec3(0.0f, 1.0f, 0.0f));
+
+         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     }
 
     virtual void init()
@@ -195,30 +202,67 @@ public:
 
     virtual void onKey(int button, int action)
     {
-        float cameraSpeed = 1.0f;
-        if (button == GLFW_KEY_W && GLFW_REPEAT == action) {
+        float cameraSpeed = 0.5f;
+        if (button == GLFW_KEY_W && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
             camera.setPos(camera.getPos() + camera.getFront()*cameraSpeed);
             std::cout << "W" << std::endl;
-        } else if (button == GLFW_KEY_S && GLFW_REPEAT == action) {
+        } else if (button == GLFW_KEY_S && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
             camera.setPos(camera.getPos() - camera.getFront()*cameraSpeed);
             std::cout << "S" << std::endl;
-        } else if (button == GLFW_KEY_A && GLFW_REPEAT == action) {
+        } else if (button == GLFW_KEY_A && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
             curiosity::vec3 right = camera.getUp().cross(camera.getFront()).normalize();
             camera.setPos(camera.getPos() + right*cameraSpeed);
             std::cout << "A" << std::endl;
-        } else if (button == GLFW_KEY_D && GLFW_REPEAT == action) {
+        } else if (button == GLFW_KEY_D && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
             curiosity::vec3 right = camera.getFront().cross(camera.getUp()).normalize();
             camera.setPos(camera.getPos() + right*cameraSpeed);
             std::cout << "D" << std::endl;
         }
     }
 
+    virtual void onMouseMove(int x, int y)
+    {
+        static float yaw = -90.0f;
+        static float pitch = 0.0f;
+        static int lastX, lastY;
+        static bool firstMouse = true;
+        if (firstMouse) {
+            lastX = info.windowWidth/2.0f;
+            lastY = info.windowHeight/2.0f;
+            firstMouse = false;
+        }
+
+        float xoffset = x - lastX;
+        float yoffset = y - lastY;
+        lastX = x;
+        lastY = y;
+
+        float sensitivity = 0.05;
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
+
+        yaw += xoffset;
+        pitch += yoffset;
+
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
+
+        curiosity::vec3 front;
+        front.x = cos(yaw/180.0f * 3.1415f) * cos(pitch/180.0f * 3.1415f);
+        front.y = sin(pitch/180.0f * 3.1415f);
+        front.z = sin(yaw/180.0f * 3.1415f) * cos(pitch/180.0f * 3.1415f);
+        curiosity::vec3 _front = front.normalize();
+        camera.setFront(_front);
+    }
 private:
     curiosity::Shader *shader;
     GLuint VAO, VBO;
     GLuint texture1;
 
     curiosity::Camera camera;
+    float deltaTime;
 };
 
 DECLARE_MAIN(my_application);

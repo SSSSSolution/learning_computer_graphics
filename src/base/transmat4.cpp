@@ -37,33 +37,34 @@ namespace curiosity {
 
     TransMat4 TransMat4::Projection(float aspect, float fov, float zNear, float zFar)
     {
+//        float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
+//                        0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
+//                        0.0f,  0.0f,  (-1.0f*zFar - zNear)/(zNear - zFar), 1.0f,
+//                        0.0f,  0.0f,  (2*zNear*zFar)/(zNear-zFar),         0.0f };
         float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
                         0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
-                        0.0f,  0.0f,  (-1.0f*zFar - zNear)/(zNear - zFar), 1.0f,
-                        0.0f,  0.0f,  (2*zNear*zFar)/(zNear-zFar),         0.0f };
+                        0.0f,  0.0f,  (zFar)/(zFar-zNear), 1.0f,
+                        0.0f,  0.0f,  (zNear*zFar)/(zNear-zFar),         0.0f };
         TransMat4 mat(d);
         return mat;
     }
 
     TransMat4 TransMat4::lookAt(const vec3 &position, const vec3 &target, const vec3 &up)
     {
-        vec3 direct = target - position;
-        vec3 right = direct.cross(up);
-
-        vec3 _direct = direct.normalize();
-        vec3 _right = right.normalize();
-        vec3 _up = up.normalize();
+        vec3 zaxis = (target-position).normalize();
+        vec3 xaxis = zaxis.cross(up).normalize();
+        vec3 yaxis = zaxis.cross(xaxis);
 
         float d[16];
-        d[0] = _right.x;
-        d[4] = _right.y;
-        d[8] = _right.z;
-        d[1] = _up.x;
-        d[5] = _up.y;
-        d[9] = _up.z;
-        d[2] = _direct.x;
-        d[6] = _direct.y;
-        d[10] = _direct.z;
+        d[0] = xaxis.x;
+        d[4] = xaxis.y;
+        d[8] = xaxis.z;
+        d[1] = yaxis.x;
+        d[5] = yaxis.y;
+        d[9] = yaxis.z;
+        d[2] = zaxis.x;
+        d[6] = zaxis.y;
+        d[10] = zaxis.z;
         d[15] = 1.0f;
         d[3]=d[7]=d[11]=d[12]=d[13]=d[14]=0.0f;
 
