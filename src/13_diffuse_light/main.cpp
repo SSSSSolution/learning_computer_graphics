@@ -75,6 +75,7 @@ public:
 #ifdef _DEBUG
         info.flags.debug = 1;
 #endif
+        glfwWindowHint(GLFW_SAMPLES, 4);
     }
 
     virtual void startup()
@@ -109,9 +110,10 @@ public:
         camera.setMouseSensitivity(0.025f);
         camera.setMoveSpeed(0.25f);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_POLYGON_SMOOTH);
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//        glEnable(GL_POLYGON_SMOOTH);
+        glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
