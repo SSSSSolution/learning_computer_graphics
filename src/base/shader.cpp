@@ -44,7 +44,7 @@ namespace curiosity {
 
     void Shader::setFloat(const string &name, float value) const
     {
-        glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+        glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
     }
 
     void Shader::setTransMat4(const string &name, TransMat4 &mat4)

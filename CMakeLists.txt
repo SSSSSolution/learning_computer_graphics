@@ -16,4 +16,5 @@ add_subdirectory(src/10_some_cube)
 add_subdirectory(src/11_camera)
 add_subdirectory(src/12_light_source)
 add_subdirectory(src/13_diffuse_light)
+add_subdirectory(src/14_material)
 

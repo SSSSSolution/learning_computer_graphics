@@ -87,7 +87,7 @@ public:
         sourceShader = new Shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str());
 
         vertexShaderPath = rootDir + std::string("/src/shader/13_object.vs");
-        fragmentShaderPath = rootDir + std::string("/src/shader/13_object.fs");
+        fragmentShaderPath = rootDir + std::string("/src/shader/14_material.fs");
         objectShader = new Shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str());
 
         glCreateBuffers(1, &VBO);
@@ -110,9 +110,6 @@ public:
         camera.setMouseSensitivity(0.025f);
         camera.setMoveSpeed(0.25f);
 
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//        glEnable(GL_POLYGON_SMOOTH);
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -120,36 +117,30 @@ public:
 
     virtual void render(double currentTime)
     {
-        static double lastTime = currentTime;
-        double deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        std::cout << "frame time: " << deltaTime << "s" << std::endl;
-
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         viewMat = camera.getViewMatrix();
         projectMat = TransMat4::Projection(
                     (float)(info.windowWidth)/(float)(info.windowHeight),
                      RADIANS(fov), 0.1f, 100.0f);
-//        viewMat = TransMat4::Identity();
-//        projectMat = TransMat4::Identity();
 
         // 画光源
         sourceShader->use();
         vec3 lightPos(0.0f, 0.0f, 0.0f);
-        lightPos.x = 5.0f *sin(currentTime);
-        lightPos.y = 5.0f * cos(currentTime);
+        lightPos.x = 5.0f *sin(currentTime*0.1f);
+        lightPos.y = 5.0f * cos(currentTime*0.1f);
         vec3 lightColor(1.0f, 1.0f, 1.0f);
         vec3 objectColor(1.0f, 0.5f, 0.31f);
         modelMat = TransMat4::Translation(lightPos.x, lightPos.y, lightPos.z);
         rotateMat = TransMat4::Rotation(1.0f, 1.0f, 1.0f, (float)currentTime);
-//        modelMat = modelMat * rotateMat;
 
         sourceShader->setTransMat4("view", viewMat);
         sourceShader->setTransMat4("project", projectMat);
         sourceShader->setTransMat4("model", modelMat);
+        lightColor.x = sin(currentTime*2.0f);
+        lightColor.y = sin(currentTime*0.7f);
+        lightColor.z = sin(currentTime*1.3f);
         sourceShader->setVec3("lightColor", lightColor.x, lightColor.y, lightColor.z);
 
         glBindVertexArray(sourceVAO);
@@ -165,13 +156,20 @@ public:
         objectShader->setTransMat4("view", viewMat);
         objectShader->setTransMat4("project", projectMat);
         objectShader->setTransMat4("model", modelMat);
-        objectShader->setVec3("objectColor", objectColor.x, objectColor.y, objectColor.z);
-        objectShader->setVec3("lightColor", 1.0f, 1.0f, 0.0f);
-        objectShader->setVec3("lightPos", lightPos.x, lightPos.y, lightPos.z);
+
+        objectShader->setVec3("light.position", lightPos.x, lightPos.y, lightPos.z);
+        objectShader->setVec3("light.ambient", lightColor.x * 0.2f, lightColor.y * 0.2f, lightColor.z * 0.2f);
+        objectShader->setVec3("light.diffuse", lightColor.x * 0.5f, lightColor.y * 0.5f, lightColor.z * 0.5f);
+        objectShader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
         vec3 viewPos = camera.getPosition();
         objectShader->setVec3("viewPos", viewPos.x, viewPos.y, viewPos.z);
-        glBindVertexArray(objectVAO);
 
+        objectShader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        objectShader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        objectShader->setVec3("material.specular",1.0f, 0.5f, 0.31f);
+        objectShader->setFloat("material.shininess", 32.0f);
+
+        glBindVertexArray(objectVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
