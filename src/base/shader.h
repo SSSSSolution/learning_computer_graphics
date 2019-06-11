@@ -3,6 +3,7 @@
 
 #include "sb7_include/sb7.h"
 #include <string>
+#include "transmat4.h"
 
 namespace curiosity {
 
@@ -23,6 +24,8 @@ namespace curiosity {
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
         void setFloat(const std::string &name, float value) const;
+        void setTransMat4(const std::string &name, TransMat4 &mat4);
+        void setVec3(const std::string name, float v1, float v2, float v3);
 
     private:
         void installShader(const char *shaderPath, GLuint *shader, GLuint shaderType);

@@ -31,6 +31,7 @@ namespace curiosity {
             position_ = position_ + right_ * moveSpeed_;
             break;
         }
+        updateCameraVectors();
     }
 
     void Camera::processMouseMove(float xOffset, float yOffset)
@@ -39,7 +40,7 @@ namespace curiosity {
         yOffset *= mouseSensitivity_;
 
         yaw_ += xOffset;
-        pitch_ += yOffset;
+        pitch_ -= yOffset;
 
         if (pitch_ > 89.0f)
             pitch_ = 89.0f;

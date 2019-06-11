@@ -37,14 +37,14 @@ namespace curiosity {
 
     TransMat4 TransMat4::Projection(float aspect, float fov, float zNear, float zFar)
     {
-//        float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
-//                        0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
-//                        0.0f,  0.0f,  (-1.0f*zFar - zNear)/(zNear - zFar), 1.0f,
-//                        0.0f,  0.0f,  (2*zNear*zFar)/(zNear-zFar),         0.0f };
         float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
                         0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
-                        0.0f,  0.0f,  (zFar)/(zFar-zNear), 1.0f,
-                        0.0f,  0.0f,  (zNear*zFar)/(zNear-zFar),         0.0f };
+                        0.0f,  0.0f,  (-1.0f*zFar - zNear)/(zNear - zFar), 1.0f,
+                        0.0f,  0.0f,  (2*zNear*zFar)/(zNear-zFar),         0.0f };
+//        float d[16] = { 1.0f/(aspect*tan(fov/2.0f)),    0.0f,     0.0f,    0.0f,
+//                        0.0f,  1.0f/tan(fov/2.0f),      0.0f,              0.0f,
+//                        0.0f,  0.0f,  (zFar)/(zFar-zNear), 1.0f,
+//                        0.0f,  0.0f,  (zNear*zFar)/(zNear-zFar),         0.0f };
         TransMat4 mat(d);
         return mat;
     }
@@ -53,7 +53,7 @@ namespace curiosity {
     {
         vec3 zaxis = (target-position).normalize();
         vec3 xaxis = zaxis.cross(up).normalize();
-        vec3 yaxis = zaxis.cross(xaxis);
+        vec3 yaxis = xaxis.cross(zaxis);
 
         float d[16];
         d[0] = xaxis.x;
@@ -71,9 +71,9 @@ namespace curiosity {
         TransMat4 mat1(d);
 
         TransMat4 mat2 = TransMat4::Identity();
-        mat2.data[12] = 1.0f * -1.0f * position.x;
-        mat2.data[13] = 1.0f * -1.0f * position.y;
-        mat2.data[14] = 1.0f * -1.0f * position.z;
+        mat2.data[12] =  -1.0f * position.x;
+        mat2.data[13] =  -1.0f * position.y;
+        mat2.data[14] =  -1.0f * position.z;
 
         return mat1*mat2;
     }

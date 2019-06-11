@@ -15,6 +15,10 @@ namespace curiosity {
                vec3 worldUp = vec3(0.0f, 1.0f, 0.0f),
                float pitch = 0.0f, float yaw = -90.0f);
 
+        inline vec3 getPosition() {
+            return position_;
+        }
+
         TransMat4 getViewMatrix();
 
         inline void setMoveSpeed(float v) {

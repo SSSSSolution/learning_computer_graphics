@@ -7,6 +7,8 @@ namespace curiosity {
     class TransMat4
     {
     public:
+        TransMat4() {}
+
         static TransMat4 Translation(float Tx, float Ty, float Tz);
         static TransMat4 Rotation(float Rx, float Ry, float Rz, float r);
         static TransMat4 Projection(float aspect, float fov, float zNear, float zFar);

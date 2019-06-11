@@ -14,4 +14,6 @@ add_subdirectory(src/08_draw_cube)
 add_subdirectory(src/09_test_shader)
 add_subdirectory(src/10_some_cube)
 add_subdirectory(src/11_camera)
+add_subdirectory(src/12_light_source)
+add_subdirectory(src/13_diffuse_light)
 

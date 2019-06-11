@@ -47,6 +47,16 @@ namespace curiosity {
         glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
     }
 
+    void Shader::setTransMat4(const string &name, TransMat4 &mat4)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, mat4.dataPtr());
+    }
+
+    void Shader::setVec3(const std::string name, float v1, float v2, float v3)
+    {
+        glUniform3f(glGetUniformLocation(programID, name.c_str()), v1, v2, v3);
+    }
+
     void Shader::installShader(const char *shaderPath, GLuint *shader, GLuint shaderType)
     {
         std::string shaderSrc;

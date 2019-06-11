@@ -78,7 +78,7 @@ public:
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 //        std::cout << "frame time: " << deltaTime << "s" << std::endl;
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(1.0f, 0.5f, 0.31f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
@@ -167,7 +167,7 @@ public:
          glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
          fov = 45;
-
+        camera.setMouseSensitivity(0.025);
     }
 
     virtual void init()
@@ -215,6 +215,8 @@ public:
 
         float xoffset = x - lastX;
         float yoffset = y - lastY;
+        lastX = x;
+        lastY = y;
 
         camera.processMouseMove(xoffset, yoffset);
     }
