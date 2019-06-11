@@ -94,16 +94,7 @@ public:
 
         // view
 
-//        float r = 13.0f;
-//        float cameraZ = 13.0f * sin(currentTime);
-//        float cameraY = 13.0f *cos(currentTime);
-//        camera.setPos(curiosity::vec3(0.0,cameraY, cameraZ));
-//        camera.setFront(curiosity::vec3(0.0f, 0.0f, 0.0f)-camera.getPos());
-        curiosity::TransMat4 view = curiosity::TransMat4::lookAt(
-                    camera.getPos(),
-                    camera.getPos()+camera.getFront(),
-                    camera.getUp());
-
+        curiosity::TransMat4 view = camera.getViewMatrix();
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.dataPtr());
 
         curiosity::TransMat4 project = curiosity::TransMat4::Projection(
@@ -173,10 +164,6 @@ public:
 
          glEnable(GL_DEPTH_TEST);
 
-         camera.setPos(curiosity::vec3(0.0, 0.0f, 30.0));
-         camera.setFront(curiosity::vec3(0.0f, 0.0f, -1.0f));
-         camera.setUp(curiosity::vec3(0.0f, 1.0f, 0.0f));
-
          glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
          fov = 45;
@@ -205,28 +192,19 @@ public:
 
     virtual void onKey(int button, int action)
     {
-        float cameraSpeed = 0.5f;
         if (button == GLFW_KEY_W && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
-            camera.setPos(camera.getPos() + camera.getFront()*cameraSpeed);
-            std::cout << "W" << std::endl;
+            camera.processKeyboard(curiosity::Camera::FORWARD);
         } else if (button == GLFW_KEY_S && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
-            camera.setPos(camera.getPos() - camera.getFront()*cameraSpeed);
-            std::cout << "S" << std::endl;
+            camera.processKeyboard(curiosity::Camera::BACKWARD);
         } else if (button == GLFW_KEY_A && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
-            curiosity::vec3 right = camera.getUp().cross(camera.getFront()).normalize();
-            camera.setPos(camera.getPos() + right*cameraSpeed);
-            std::cout << "A" << std::endl;
+            camera.processKeyboard(curiosity::Camera::LEFT);
         } else if (button == GLFW_KEY_D && (GLFW_REPEAT == action || GLFW_PRESS == action)) {
-            curiosity::vec3 right = camera.getFront().cross(camera.getUp()).normalize();
-            camera.setPos(camera.getPos() + right*cameraSpeed);
-            std::cout << "D" << std::endl;
+            camera.processKeyboard(curiosity::Camera::RIGHT);
         }
     }
 
     virtual void onMouseMove(int x, int y)
     {
-        static float yaw = -90.0f;
-        static float pitch = 0.0f;
         static int lastX, lastY;
         static bool firstMouse = true;
         if (firstMouse) {
@@ -237,37 +215,17 @@ public:
 
         float xoffset = x - lastX;
         float yoffset = y - lastY;
-        lastX = x;
-        lastY = y;
 
-        float sensitivity = 0.05;
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-
-        yaw += xoffset;
-        pitch += yoffset;
-
-        if (pitch > 89.0f)
-            pitch = 89.0f;
-        if (pitch < -89.0f)
-            pitch = -89.0f;
-
-        curiosity::vec3 front;
-        front.x = cos(yaw/180.0f * 3.1415f) * cos(pitch/180.0f * 3.1415f);
-        front.y = sin(pitch/180.0f * 3.1415f);
-        front.z = sin(yaw/180.0f * 3.1415f) * cos(pitch/180.0f * 3.1415f);
-        curiosity::vec3 _front = front.normalize();
-        camera.setFront(_front);
+        camera.processMouseMove(xoffset, yoffset);
     }
 
     virtual void onMouseWheel(int pos)
     {
-        std::cout << pos << std::endl;
         if (fov <= 1.0f)
             fov = 1.0f;
         if (fov >= 45.0f)
             fov = 45.0f;
-        fov += pos * 5.0f;
+        fov += pos * 1.0f;
     }
 
 private:
