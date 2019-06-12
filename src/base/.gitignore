@@ -5,4 +5,4 @@ test
 .qmake.stash
 target_wrapper.sh
 
-*.pro.user.*
+*.pro.user*
