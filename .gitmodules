@@ -7,3 +7,6 @@
 [submodule "sb7code"]
 	path = sb7code
 	url = https://github.com/openglsuperbible/sb7code.git
+[submodule "assimp"]
+	path = assimp
+	url = https://github.com/SSSSSolution/assimp.git

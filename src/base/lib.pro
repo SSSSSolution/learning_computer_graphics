@@ -16,7 +16,7 @@ QT -= gui
 CONFIG += console
 CONFIG -= app_bundle
 
-LIBS += -lGL
+LIBS += -lGL -lassimp
 
 # Input
 HEADERS += vector2.h \
@@ -35,11 +35,17 @@ HEADERS += vector2.h \
     shader.h \
     transmat4.h \
     camera.h \
-    vec3.h
+    vec3.h \
+    mesh.h \
+    vec2.h \
+    model.h
 
 SOURCES += \
     shader.cpp \
     transmat4.cpp \
     camera.cpp \
-    vec3.cpp
+    vec3.cpp \
+    mesh.cpp \
+    vec2.cpp \
+    model.cpp
 
