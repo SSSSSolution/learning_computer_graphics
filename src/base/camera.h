@@ -42,7 +42,7 @@ namespace curiosity {
     private:
         void updateCameraVectors();
 
-    private:
+    public:
         vec3 position_;
         vec3 front_;
         vec3 worldUp_;
