@@ -10,3 +10,6 @@
 [submodule "assimp"]
 	path = assimp
 	url = https://github.com/SSSSSolution/assimp.git
+[submodule "CuriosityGraphicsBase"]
+	path = CuriosityGraphicsBase
+	url = https://github.com/SSSSSolution/CuriosityGraphicsBase.git

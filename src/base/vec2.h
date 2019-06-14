@@ -6,7 +6,8 @@ namespace curiosity {
     class vec2
     {
     public:
-        vec2(float x = 0.0f, float y = 0.0f)
+        vec2() {}
+        vec2(float x, float y)
             :x_(x), y_(y) {
         }
 

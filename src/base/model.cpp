@@ -67,17 +67,22 @@ namespace curiosity {
                 vertex.texCoords = vec2(0.0f, 0.0f);
             }
 
-            vector3.x = mesh->mTangents[i].x;
-            vector3.y = mesh->mTangents[i].y;
-            vector3.z = mesh->mTangents[i].z;
-            vertex.tangent = vector3;
-
-            vector3.x = mesh->mBitangents[i].x;
-            vector3.y = mesh->mBitangents[i].y;
-            vector3.z = mesh->mBitangents[i].z;
-            vertex.bitTangent = vector3;
+//            if (mesh->mTangents != NULL) {
+//            vector3.x = mesh->mTangents[i].x;
+//            vector3.y = mesh->mTangents[i].y;
+//            vector3.z = mesh->mTangents[i].z;
+//            vertex.tangent = vector3;
+//            }
+//            if (mesh->mBitangents != NULL) {
+//            vector3.x = mesh->mBitangents[i].x;
+//            vector3.y = mesh->mBitangents[i].y;
+//            vector3.z = mesh->mBitangents[i].z;
+//            vertex.bitTangent = vector3;
+//            }
             vertices.push_back(vertex);
+
         }
+        std::cout << "===========" << std::endl;
         // 处理网格上的面
         for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
             aiFace face = mesh->mFaces[i];
@@ -85,7 +90,6 @@ namespace curiosity {
                 indices.push_back(face.mIndices[j]);
             }
         }
-
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
         // 1. diffuse maps
@@ -114,7 +118,7 @@ namespace curiosity {
 
             bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++) {
-                if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()))
+                if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true;
@@ -170,6 +174,15 @@ namespace curiosity {
             stbi_image_free(data);
         }
 
+        if (textureID == 0)
+            std::cout << "0" << std::endl;
+        if (textureID == 1)
+            std::cout << "1" << std::endl;
+        if (textureID == 2)
+            std::cout << "2" << std::endl;
+        if (textureID == 3)
+            std::cout << "3" << std::endl;
+        std::cout << filename << std::endl;
         return textureID;
     }
 

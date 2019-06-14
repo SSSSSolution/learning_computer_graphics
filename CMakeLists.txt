@@ -3,7 +3,7 @@ project (learning_computer_graphics)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/base)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}-std=c++0x")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -g")
 
 add_subdirectory(src/01_get_start)
 add_subdirectory(src/02_compile_shader)

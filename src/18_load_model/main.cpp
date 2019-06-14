@@ -44,7 +44,8 @@ public:
         std::string vertexShaderPath = rootDir + std::string("/src/shader/18_load_model.vs");
         std::string fragmentShaderPath = rootDir + std::string("/src/shader/18_load_model.fs");
         shader = new Shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str());
-        model = new Model("../src/model/nanosuit/nanosuit.obj");
+        model = new Model("/home/huangwei/tmp/test_model/OBJ/Dragon.obj");
+        std::cout << "model create finished" << std::endl;
 
         fov = 45.0f;
         camera.setMouseSensitivity(0.025f);
@@ -57,6 +58,11 @@ public:
 
     virtual void render(double currentTime)
     {
+        static double lastTime = currentTime;
+        double deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+//        std::cout << "frame time: " << deltaTime << "s" << std::endl;
+
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
