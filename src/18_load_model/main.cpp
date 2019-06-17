@@ -44,7 +44,7 @@ public:
         std::string vertexShaderPath = rootDir + std::string("/src/shader/18_load_model.vs");
         std::string fragmentShaderPath = rootDir + std::string("/src/shader/18_load_model.fs");
         shader = new Shader(vertexShaderPath.c_str(), fragmentShaderPath.c_str());
-        model = new Model("/home/huangwei/tmp/test_model/OBJ/Dragon.obj");
+        model = new Model("/home/huangwei/study/computer_graphics/learning_computer_graphics/src/model/nanosuit/nanosuit.obj");
         std::cout << "model create finished" << std::endl;
 
         fov = 45.0f;
